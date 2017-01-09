@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      #output {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      City: <input type="text" id="city"><button id="weatherTrigger">Show me the weather!</button>
+    </div>
+    <div id="output">
+      The weather is: <span id="weather"></span>
+    </div>
+    <script>
+      var OPEN_WEATHER_MAP_APP_ID = "7e617ff238a682a7bf4f0cc906473bdd";
+
+      document.getElementById("weatherTrigger")
+              .addEventListener("click", function(event) {
+                var city = document.getElementById("city").value;
+                console.log(city);
+
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                  if (this.readyState === 4 && this.status === 200) {
+                    document.getElementById("weather").innerText = this.responseText;
+                    document.getElementById("output").style.display = "block";
+                  }
+                };
+
+                xhr.open("GET", "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=" + OPEN_WEATHER_MAP_APP_ID, true);
+                xhr.send();                
+              });
+    </script>
+  </body>
+</html>
