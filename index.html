@@ -12,7 +12,9 @@
       City: <input type="text" id="city"><button id="weatherTrigger">Show me the weather!</button>
     </div>
     <div id="output">
-      The weather is: <span id="weather"></span>
+      The weather is:
+      <ul id="conditions">
+      </ul>
     </div>
     <script>
       var OPEN_WEATHER_MAP_APP_ID = "7e617ff238a682a7bf4f0cc906473bdd";
@@ -20,12 +22,23 @@
       document.getElementById("weatherTrigger")
               .addEventListener("click", function(event) {
                 var city = document.getElementById("city").value;
-                console.log(city);
 
                 var xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function() {
                   if (this.readyState === 4 && this.status === 200) {
-                    document.getElementById("weather").innerText = this.responseText;
+                    var weatherResponse = JSON.parse(this.responseText);
+                    var weather = weatherResponse.weather;
+                    for (var i = 0; i < weather.length; i++) {
+                      var theWeather = weather[i];
+
+                      var condition = theWeather.main;
+
+                      var conditionsElement = document.getElementById("conditions");
+                      var conditionListItem = document.createElement('li');
+                      conditionListItem.innerText = condition;
+                      conditionsElement.appendChild(conditionListItem);
+                    }
+
                     document.getElementById("output").style.display = "block";
                   }
                 };
